@@ -1,0 +1,27 @@
+# Ignored Files & Folders
+
+# General Ignores
+._*
+.~*
+*LCK
+*~
+.DS_store
+.vagrant
+/src/*
+/www/typo3temp/*
+/www/fileadmin/_temp_
+/www/fileadmin/user_upload/_temp_
+/www/typo3conf/temp_*
+/www/typo3conf/ENABLE_INSTALL_TOOL
+/www/typo3conf/deprecation_*
+/www/typo3
+/www/t3lib
+/www/typo3_src
+/www/localsettings/
+/www/localsettings/logs/.awstats-data/
+/www/uploads/tx_extensionbuilder/backups/
+/www/INSTALL.txt
+/www/README.txt
+/www/RELEASE_NOTES.txt
+*.log
+*.tar

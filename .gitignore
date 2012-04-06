@@ -1,0 +1,16 @@
+# Ignored Files & Folders
+
+# General Ignores
+.vagrant
+.project
+.settings
+._*
+.~*
+*LCK
+*~
+.DS_store
+/www/
+*.log
+*.tar
+.version
+nbproject

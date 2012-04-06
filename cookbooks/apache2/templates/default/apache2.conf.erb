@@ -85,8 +85,9 @@ KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
     MaxRequestsPerChild   <%= node[:apache][:worker][:maxrequestsperchild] %>
 </IfModule>
 
-User <%= node[:apache][:user] %>
-Group <%= node[:apache][:user] %>
+# When it is a shared file
+User vagrant
+Group vagrant
 
 #
 # AccessFileName: The name of the file to look for in each directory

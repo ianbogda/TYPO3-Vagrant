@@ -184,6 +184,14 @@ include_recipe "apache2::mod_setenvif"
 include_recipe "apache2::mod_php5"
 include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "suse")
 
+directory "#{node[:apache][:dir]}/mods-available" do
+  owner "root"
+  group "root"
+  mode "0644"
+  action :create
+  recursive true
+end
+
 # uncomment to get working example site on centos/redhat/fedora
 #apache_site "default"
 

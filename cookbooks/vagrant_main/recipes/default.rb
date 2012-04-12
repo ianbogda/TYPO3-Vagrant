@@ -1,16 +1,17 @@
+#
+# Cookbook Name:: Vagrant_main
+# Recipe:: default	
+#
+
 require_recipe "apt"
+require_recipe "git"
 
-# Optional packages that I like to have installed
-%w{vim man-db git-core}.each do | pkg |
-  package pkg
-end
-
-# Run apt-get update before the chef convergence stage
-r = execute "apt-get update" do
-  user "root"
-  command "apt-get update"
-  action :nothing
-end
-r.run_action(:run)
-
+#
+# Setup TYPO3
+#
 require_recipe "typo3"
+
+#
+# Setup Cucumber
+#
+require_recipe "cucumber"

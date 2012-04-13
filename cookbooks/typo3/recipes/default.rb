@@ -23,8 +23,8 @@ node.set['typo3']['source']['dir'] = "/var/www/src"
 node.set['typo3']['db']['password'] = secure_password
 
 remote_file "#{Chef::Config[:file_cache_path]}/typo3-#{node['typo3']['version']}.tar.gz" do
-	source "http://downloads.sourceforge.net/typo3/introductionpackage-#{node['typo3']['version']}.tar.gz"
-	mode "0644"
+	source "http://sourceforge.net/projects/typo3/files/TYPO3%20Source%20and%20Dummy/TYPO3%204.6.7/introductionpackage-4.6.7.tar.gz/download"
+	mode "0774"
 end
 
 directory "#{node['typo3']['dir']}" do
@@ -45,11 +45,12 @@ end
 
 # TODO: Separate Sources & Config
 execute "untar-typo3" do
-	command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/typo3-#{node['typo3']['version']}.tar.gz #{node['typo3']['dir']}"
+	cwd node['typo3']['source']['dir']
+	command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/typo3-#{node['typo3']['version']}.tar.gz"
 end
 
 #execute "mysql-install-typo3-privileges" do
-#  command "/usr/bin/mysql -u root -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
+#  command "/usr/bin/mysql -u root -p\"#{node['mysql_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
 #  action :nothing
 #end
 
@@ -67,7 +68,7 @@ end
 #end
 
 execute "create #{node['typo3']['db']['database']} database" do
-	command "/usr/bin/mysqladmin -u root -p\"#{node['mysql']['server_root_password']}\" create #{node['typo3']['db']['database']}"
+	command "/usr/bin/mysqladmin -u root -p\"#{node['mysql_password']}\" create #{node['typo3']['db']['database']}"
 end
 
 # TODO

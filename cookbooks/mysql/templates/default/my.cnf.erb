@@ -55,13 +55,18 @@ skip-external-locking
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 bind-address            = <%= node['mysql']['bind_address'] %>
+
+collation_server       = utf8_unicode_ci
+character_set_server   = utf8
+
+
 #
 # * Fine Tuning
 #
 key_buffer              = <%= node['mysql']['tunable']['key_buffer'] %>
-max_allowed_packet      = <%= node['mysql']['tunable']['max_allowed_packet'] %>
-thread_stack            = <%= node['mysql']['tunable']['thread_stack'] %>
-thread_cache_size       = <%= node['mysql']['tunable']['thread_cache_size'] %>
+max_allowed_packet      = 16M
+thread_stack            = 256K
+thread_cache_size       = 8
 # This replaces the startup script and checks MyISAM tables if needed
 # the first time they are touched
 myisam-recover          = BACKUP
@@ -100,8 +105,8 @@ log-queries-not-using-indexes
 #       other settings you may need to change.
 #server-id              = 1
 #log_bin                        = /var/log/mysql/mysql-bin.log
-expire_logs_days        = <%= node['mysql']['tunable']['expire_logs_days'] %>
-max_binlog_size         = <%= node['mysql']['tunable']['max_binlog_size'] %>
+expire_logs_days        = 10
+max_binlog_size         = 100M
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name
 #
@@ -113,7 +118,8 @@ max_binlog_size         = <%= node['mysql']['tunable']['max_binlog_size'] %>
 #skip-innodb
 innodb_buffer_pool_size = <%= node['mysql']['tunable']['innodb_buffer_pool_size'] %>
 
-<% if @skip_federated %>
+<% case node['platform'] -%>
+<% when "centos", "redhat", "fedora", "ubuntu" -%>
 #
 # * Federated
 #
@@ -137,13 +143,13 @@ skip-federated
 [mysqldump]
 quick
 quote-names
-max_allowed_packet      = <%= node['mysql']['tunable']['max_allowed_packet'] %>
+max_allowed_packet      = 16M
 
 [mysql]
 #no-auto-rehash # faster start of mysql but no tab completition
 
 [isamchk]
-key_buffer              = <%= node['mysql']['tunable']['max_allowed_packet'] %>
+key_buffer              = 16M
 
 #
 # * NDB Cluster
@@ -157,7 +163,7 @@ key_buffer              = <%= node['mysql']['tunable']['max_allowed_packet'] %>
 # ndb-connectstring=127.0.0.1
 
 <% case node['platform'] -%>
-<% when "centos", "redhat", "fedora", "suse", "scientific", "amazon"-%>
+<% when "centos", "redhat", "fedora", "suse" -%>
 #
 # * BerkeleyDB
 #

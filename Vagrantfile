@@ -1,6 +1,6 @@
 Vagrant::Config.run do |config|
- 
-	config.vm.box = "lucid32"
+	config.vm.box     = "oneiric32_base"
+	config.vm.box_url = "http://files.travis-ci.org/boxes/bases/oneiric32_base.box"
 
 	# IP-address to connect to
 	config.vm.network :hostonly, "10.11.12.13"
@@ -13,12 +13,19 @@ Vagrant::Config.run do |config|
 	# an identifier, the second is the path on the guest to mount the
 	# folder, and the third is the path on the host to the actual folder.
 	# config.vm.share_folder "v-data", "/vagrant_data", "../data"
-	config.vm.share_folder "www", "/var/www/typo3", "./www"
+	config.vm.share_folder "www", "/var/www/site", "./www"
 
 	config.vm.provision :chef_solo do |chef|
 
-		chef.cookbooks_path = "cookbooks"
-		chef.add_recipe "vagrant_main"
+		chef.cookbooks_path = ["cookbooks"]
+	
+		# Turn on verbose Chef logging if necessary
+		chef.log_level      = :debug
+
+		# List the recipies you are going to work on/need.
+		chef.add_recipe     "build-essential"    
+		# chef.add_recipe     "networking_basic"    
+		# chef.add_recipe     "kerl"
 
 		# You may also specify custom JSON attributes:
 		chef.json = { :mysql_password => "foo" }

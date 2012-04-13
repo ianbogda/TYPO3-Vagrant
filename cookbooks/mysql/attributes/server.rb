@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-default['mysql']['bind_address']               = attribute?('cloud') ? cloud['local_ipv4'] : ipaddress
+default['mysql']['bind_address']              = "0.0.0.0"
 default['mysql']['data_dir']                   = "/var/lib/mysql"
 
 case node["platform"]
-when "centos", "redhat", "fedora", "suse", "scientific", "amazon"
+when "centos", "redhat", "fedora", "suse"
   set['mysql']['conf_dir']                    = '/etc'
   set['mysql']['socket']                      = "/var/lib/mysql/mysql.sock"
   set['mysql']['pid_file']                    = "/var/run/mysqld/mysqld.pid"
@@ -33,11 +33,15 @@ else
   set['mysql']['old_passwords']               = 0
 end
 
-if attribute?('ec2')
-  default['mysql']['ec2_path']    = "/mnt/mysql"
-  default['mysql']['ebs_vol_dev'] = "/dev/sdi"
-  default['mysql']['ebs_vol_size'] = 50
-end
+# yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
+default['mysql']['server_root_password']   = ""
+default['mysql']['server_debian_password'] = ""
+default['mysql']['server_repl_password']   = ""
+
+default['mysql']['ci_user_name']           = "travis"
+default['mysql']['ci_user_password']       = ""
+
+
 
 default['mysql']['allow_remote_root']               = false
 default['mysql']['tunable']['back_log']             = "128"
@@ -61,8 +65,5 @@ default['mysql']['tunable']['query_cache_size']     = "16M"
 
 default['mysql']['tunable']['log_slow_queries']     = "/var/log/mysql/slow.log"
 default['mysql']['tunable']['long_query_time']      = 2
-
-default['mysql']['tunable']['expire_logs_days']     = 10
-default['mysql']['tunable']['max_binlog_size']      = "100M"
 
 default['mysql']['tunable']['innodb_buffer_pool_size']  = "256M"

@@ -14,4 +14,5 @@ require_recipe "typo3"
 #
 # Setup Cucumber
 #
-require_recipe "cucumber"
+#TODO: Frontend Acceptence test
+#require_recipe "cucumber"

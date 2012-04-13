@@ -25,9 +25,10 @@ Vagrant::Config.run do |config|
 		# List the recipies you are going to work on/need.
 		chef.add_recipe     "build-essential"    
 		chef.add_recipe     "travis_build_environment"
+		chef.add_recipe     "vagrant_main"
 
 		# You may also specify custom JSON attributes:
-		chef.json = { :mysql_password => "foo" }
+		chef.json = { :mysql_password => "" }
 	end
 
 end

@@ -17,7 +17,8 @@ Vagrant::Config.run do |config|
 
 	config.vm.provision :chef_solo do |chef|
 
-		chef.cookbooks_path = ["cookbooks"]
+		chef.cookbooks_path = ["config/vm/cookbooks"]
+		chef.roles_path     = ["config/vm/roles"]
 	
 		# Turn on verbose Chef logging if necessary
 		# chef.log_level      = :debug
@@ -25,7 +26,9 @@ Vagrant::Config.run do |config|
 		# List the recipies you are going to work on/need.
 		chef.add_recipe     "build-essential"    
 		chef.add_recipe     "travis_build_environment"
-		chef.add_recipe     "vagrant_main"
+		# chef.add_recipe     "vagrant_main"
+
+		chef.add_role "typo3"
 
 		# You may also specify custom JSON attributes:
 		chef.json = { :mysql_password => "" }
